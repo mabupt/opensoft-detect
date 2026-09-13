@@ -51,6 +51,19 @@ export OPENSOFT_LLM_MODEL=<model-name>
 export OPENAI_API_KEY=<your-key>                           # 切勿提交/写入产物
 ```
 
+## 安装
+
+```bash
+git clone https://github.com/mabupt/opensoft-detect.git
+cd opensoft-detect
+python -m venv .venv && . .venv/bin/activate     # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+pip install semgrep pip-audit                     # 外部静态引擎（可选，缺失时自动降级）
+```
+
+> 本项目按**工具**（而非可安装库）组织，请从源码目录运行 `main.py`；以库形式分发（PyPI）需要
+> 打包改造，尚未提供。
+
 ## 快速开始
 
 ```bash
