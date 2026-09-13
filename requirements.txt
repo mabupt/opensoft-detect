@@ -1,0 +1,35 @@
+# OpenSoft Detect 运行时依赖清单
+# 安装：rag_env\Scripts\pip install -r requirements.txt
+#
+# 注意：
+#  - Semgrep / pip-audit 是子进程调用的外部引擎，但可通过 pip 装进本 venv。
+#  - CodeQL 为独立 bundle（项目内 codeql/codeql-bundle-win64），不走 pip。
+#  - Qdrant 服务器是独立二进制，走 pip 的是其客户端 qdrant-client。
+#  - 当前目录已有 rag_env/ 虚拟环境，建议在该 venv 内安装。
+
+# --- 模块1：子进程调用的静态工具（pip 可装） ---
+semgrep>=1.80.0
+pip-audit>=2.7.0
+
+# --- 模块2 / 模块3：向量检索与嵌入 ---
+qdrant-client>=1.9.0
+fastembed>=0.3.0
+onnxruntime>=1.17.0
+numpy>=1.26.0
+
+# --- 模块3：LLM 调用 ---
+anthropic>=0.40.0
+# openai>=1.30.0        # 若 provider 使用 OpenAI 兼容协议，取消注释
+
+# --- 模块4：Docker 沙箱客户端 ---
+docker>=7.0.0
+
+# --- 模块5：HTML 报告渲染 ---
+jinja2>=3.1.0
+
+# --- 通用 ---
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# --- 开发/测试 ---
+pytest>=8.0.0

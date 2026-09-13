@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 本项目自有产物
+output/
+rag_env/
+codeql/
+qdrant_storage/
+models/
+
+# 测试/实验临时文件
+*.log
+.DS_Store
+
+# 工具本地配置（命令白名单里可能含明文密钥，实测发生过）
+.claude/
+
+# 第三方靶场/评测语料：不随仓库分发（版权 + 体积），见 README「评测语料」一节
+test/

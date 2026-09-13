@@ -1,0 +1,55 @@
+# OpenSoft Detect 内置 Semgrep 规则（离线可用）
+# 供模块1 SemgrepRunner 在未联网时直接使用：python.lang 代码/命令注入基础规则。
+rules:
+  - id: python.lang.security.audit.eval-usage
+    languages: [python]
+    severity: ERROR
+    message: >-
+      Detected the use of `eval`. If this input can come from a user, it may
+      be a code-injection risk. Never pass untrusted input to `eval`.
+    metadata:
+      cwe: ["CWE-95"]
+      category: security
+      confidence: MEDIUM
+    pattern-either:
+      - pattern: eval($ARG)
+      - pattern: exec($ARG)
+      - pattern: compile($ARG, ...)
+    fix: |
+      # 优先使用安全的替代方案（如 ast.literal_eval / 白名单解析）
+
+  - id: python.lang.security.audit.os-system-command
+    languages: [python]
+    severity: ERROR
+    message: >-
+      Detected use of `os.system`. If the command string is built from user
+      input, this is an OS command injection. Prefer `subprocess.run` with a
+      non-shell argument list.
+    metadata:
+      cwe: ["CWE-78"]
+      category: security
+      confidence: MEDIUM
+    pattern-either:
+      - pattern: os.system($CMD)
+      - pattern: os.popen($CMD)
+      - pattern: os.spawn($CMD)
+    fix: |
+      import subprocess
+      subprocess.run($ARGS, shell=False)
+
+  - id: python.lang.security.audit.subprocess-shell-true
+    languages: [python]
+    severity: WARNING
+    message: >-
+      `subprocess` invoked with `shell=True`. When the command is assembled
+      from external input this enables command injection; prefer an argument
+      list with `shell=False`.
+    metadata:
+      cwe: ["CWE-78"]
+      category: security
+      confidence: LOW
+    pattern-either:
+      - pattern: subprocess.run(..., shell=True)
+      - pattern: subprocess.Popen(..., shell=True)
+      - pattern: subprocess.call(..., shell=True)
+      - pattern: subprocess.check_output(..., shell=True)
