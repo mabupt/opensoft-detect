@@ -7,7 +7,7 @@ LLM 误报研判（含知识库闭环）→ **容器内动态实证**（双轨�
 JSON/HTML 报告（四级置信度、CWE-ATT&CK 关联、修复 Diff）。
 
 > 实测（人工靶场 pygoat，通用代码无特判）：静态 320 条 · LLM 研判 TP 305 / FP 17 ·
-> **动态 confirmed 14**（含 3 条 DAST 独立发现）/ retry_poc 6。详见 [docs/REVIEW.md](docs/REVIEW.md)。
+> **动态 confirmed 14**（含 3 条 DAST 独立发现）/ retry_poc 6。
 
 ## 系统架构（6 大模块）
 
@@ -80,7 +80,7 @@ python scripts/bench.py --target <项目路径> --name <归档名> --attempt-dyn
 - pygoat：`https://github.com/adeyosemanputra/pygoat` → 放到 `test/goat/pygoat-master/`
 - 真实项目：任意中小型 Python 工程（Flask/Django/FastAPI 有动态支持）
 
-需要连语料一起提交时，删掉 `.gitignore` 末尾的 `test/` 一行即可。
+评测语料为第三方内容，未随仓库分发；本地复现时按上述方式获取即可。
 
 ## 状态流转
 
@@ -91,6 +91,6 @@ NEW → UNDER_REVIEW → TRUE_POSITIVE → DYNAMIC_CONFIRMED → FIX_SUGGESTED
 
 ## 文档
 
-- [docs/REVIEW.md](docs/REVIEW.md) — 一页总览（能力矩阵、实测数字、诚实边界）
-- [docs/HARDENING.md](docs/HARDENING.md) — 通用性/稳定性/可靠性加固与事故复盘
-- [docs/STATUS_AND_ROADMAP.md](docs/STATUS_AND_ROADMAP.md) · [docs/EVAL_real.md](docs/EVAL_real.md) · [docs/LLM_OPTIMIZATION.md](docs/LLM_OPTIMIZATION.md)
+- [docs/HARDENING.md](docs/HARDENING.md) — 通用性 / 稳定性 / 可靠性加固记录（含降级矩阵与事故复盘）
+- [docs/EVAL_real.md](docs/EVAL_real.md) — 真实项目评测报告（chainlit / pyload 人工判读）
+- [docs/LLM_OPTIMIZATION.md](docs/LLM_OPTIMIZATION.md) — LLM 研判的工程化设计（缓存 / 路由 / 熔断 / 闭环）
