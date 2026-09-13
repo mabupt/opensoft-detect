@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    name: 编译与冒烟自检
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 语法编译
+        run: python -m compileall -q main.py config.py models.py modules scripts
+
+      - name: 冒烟自检（模块导入 + 核心断言）
+        run: python scripts/smoke.py
+
+      # 外部引擎（Semgrep/CodeQL/pip-audit）与外部服务（Qdrant/Docker/LLM）在 CI 中均不可用，
+      # 本步骤即验证"缺失时逐级降级且仍以 0 退出"这一契约。
+      - name: 全流程降级自检
+        run: python main.py --target . --skip-enrich --skip-llm --skip-dynamic
+
+      - name: 上传自检产物
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: self-scan-report
+          path: |
+            output/file_manifest.json
+            output/findings.json
+            output/final_report.json
+          if-no-files-found: ignore
