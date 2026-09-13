@@ -1,5 +1,12 @@
 # OpenSoft Detect
 
+[![CI](https://github.com/mabupt/opensoft-detect/actions/workflows/ci.yml/badge.svg)](https://github.com/mabupt/opensoft-detect/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+**中文** | [English](README.en.md)
+
 基于 **静态分析 + RAG 上下文富化 + LLM 误报研判 + 动态验证** 的 Python 项目安全漏洞检测系统。
 
 对任意 Python 工程做端到端检测：文件过滤 → 多引擎静态发现 → 切片/路由/CWE 富化 →
