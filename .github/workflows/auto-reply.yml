@@ -1,0 +1,39 @@
+name: Issue Auto Reply
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  auto-reply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Leave auto-reply comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+
+            // 跳过 PR（PR 也会触发 issues 事件）
+            if (issue.pull_request) return;
+
+            // 跳过机器人自己发的，防止死循环
+            if (context.payload.sender.type === 'Bot') return;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body: `## 👋 感谢提交 Issue！
+
+我目前暂时离开，预计考研后回归。
+
+- 你的反馈我已收到，回归后会逐条查看
+- 紧急问题请留言说明，我会定期上线处理
+- 欢迎直接提交 PR，贡献代码会被优先审查
+
+感谢你的耐心与支持！`
+            });
